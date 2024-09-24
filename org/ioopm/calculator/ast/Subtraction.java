@@ -16,8 +16,8 @@ public class Subtraction extends Binary {
         }
     }
     public SymbolicExpression eval(Environment e ) throws IllegalAssignmentException {
-        SymbolicExpression  lhs = super.lhs.eval(e);
-        SymbolicExpression rhs = super.rhs.eval(e);
+        SymbolicExpression  lhs = super.getLeft().eval(e);
+        SymbolicExpression rhs = super.getRight().eval(e);
         if(rhs.isConstant()&&rhs.isConstant()){
             return new Constant(lhs.getValue() - rhs.getValue());
         }

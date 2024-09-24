@@ -30,8 +30,8 @@ public class Multiplication extends Binary {
      * @return constant or new symbolicexpression
      */
     public SymbolicExpression eval(Environment e) throws IllegalAssignmentException{
-        SymbolicExpression  lhs = super.lhs.eval(e);
-        SymbolicExpression rhs = super.rhs.eval(e);
+        SymbolicExpression  lhs = super.getLeft().eval(e);
+        SymbolicExpression rhs = super.getRight().eval(e);
         if(lhs.isConstant()&&rhs.isConstant()){
             return new Constant(rhs.getValue() * lhs.getValue());
         }

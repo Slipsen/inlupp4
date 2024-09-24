@@ -16,6 +16,12 @@ public class CalculatorParser {
     private int attempts = 0, successfull = 0, complete = 0;  
     private final String[] commands = {"quit","var","clear"};
     Environment vars = createEnvironment();
+    //Important characters 
+    final static char ADDITION = '+';
+    final static  char SUBTRACTION = '-';
+    final static  char MULTIPLY = '*';
+    final static char DIVISION = '/';
+    final static char  NEGATION = '-';
 
     private Environment createEnvironment(){
         Environment en = new Environment();
