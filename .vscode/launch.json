@@ -1,0 +1,63 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Test",
+            "request": "launch",
+            "mainClass": "Test",
+            "projectName": "inlupp3_1bd3a331"
+        },
+        {
+            "type": "java",
+            "name": "Testa",
+            "request": "launch",
+            "mainClass": "Testa",
+            "projectName": "inlupp3_1bd3a331"
+        },
+        {
+            "type": "java",
+            "name": "Testab",
+            "request": "launch",
+            "mainClass": "Testab",
+            "projectName": "inlupp3_1bd3a331"
+        },
+        {
+            "type": "java",
+            "name": "MapTest",
+            "request": "launch",
+            "mainClass": "VariousTests.MapTest",
+            "projectName": "inlupp3_1bd3a331"
+        },
+        {
+            "type": "java",
+            "name": "TestClassb",
+            "request": "launch",
+            "mainClass": "VariousTests.TestClassb",
+            "projectName": "inlupp3_1bd3a331"
+        },
+        {
+            "type": "java",
+            "name": "Calculator",
+            "request": "launch",
+            "mainClass": "org.ioopm.calculator.Calculator",
+            "projectName": "inlupp3_1bd3a331"
+        },
+        {
+            "type": "java",
+            "name": "CalculatorParser",
+            "request": "launch",
+            "mainClass": "org.ioopm.calculator.parser.CalculatorParser",
+            "projectName": "inlupp3_1bd3a331"
+        }
+    ]
+}
