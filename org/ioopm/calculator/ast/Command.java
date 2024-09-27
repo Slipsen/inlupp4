@@ -1,7 +1,10 @@
 package org.ioopm.calculator.ast;
 
 public abstract class Command extends SymbolicExpression {
-    
+    static Command command; 
+    protected Command(Command command){
+
+    }
 
     public SymbolicExpression eval(Environment e) throws RuntimeException{
         throw new RuntimeException("eval can't be called on command");
@@ -24,4 +27,9 @@ public abstract class Command extends SymbolicExpression {
     public String toString(){
         return getName();
     }
+    static SymbolicExpression getInstance(){
+        return command; 
+
+    }
+    
 }

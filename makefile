@@ -1,17 +1,11 @@
-plzwork:
-	javac -d classes org/ioopm/Driver.java
-
-
 all:
 	javac -d classes org/ioopm/calculator/Calculator.java
-compile:
-	javac org/ioopm/parser/*.java
-
 run:
 	java -cp classes org/ioopm/calculator/Calculator
 
-parser:
-	java -cp classes org/ioopm/parser/CalculatorParser
+test1:
+	javac -d classes Test1.java
+	java -cp classes Test1
 
 test:
 	javac -d classes Test.java

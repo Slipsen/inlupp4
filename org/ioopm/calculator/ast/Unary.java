@@ -40,9 +40,6 @@ public abstract class Unary  extends SymbolicExpression{
     }
 
     
-    boolean varExists(Environment vars, SymbolicExpression sy) {
-        return value.varExists(vars, sy); 
-    }
-   
+
 
 }

@@ -14,36 +14,49 @@ public class CalculatorParser {
     
     private  StreamTokenizer st;
     private int attempts = 0, successfull = 0, complete = 0;  
-    private final String[] commands = {"quit","var","clear"};
-    Environment vars = createEnvironment();
-    //Important characters 
-    final static char ADDITION = '+';
-    final static  char SUBTRACTION = '-';
-    final static  char MULTIPLY = '*';
-    final static char DIVISION = '/';
-    final static char  NEGATION = '-';
 
+    private Environment vars;
+    
+    //Important characters 
+    private final static char ADDITION = '+';
+    private final static char SUBTRACTION = '-';
+    private final static char MULTIPLY = '*';
+    private final static char DIVISION = '/';
+    private final static char NEGATION = '-';
+    private final static String COS = "cos";
+    private final static String SIN = "sin";
+    private final static String EXP = "exp";
+    private final static String LOG = "log";
+    private final static char  ASSIGNMENT = '=';
+    private final static String QUIT = "quit";
+    private final static String VARS = "vars";
+    private final static String CLEAR = "clear"; 
+
+
+    String writingError = "termwas incorrectly written";
     private Environment createEnvironment(){
         Environment en = new Environment();
+        en.putReserved("ans");
+        en.put(new Variable("ans"),new Constant(0));
         return en; 
 
     }
 
-    public CalculatorParser(){       
+    public CalculatorParser(){ 
+        vars = createEnvironment();
+        System.out.println(vars.keySet());      
     }
-
-
     /**
      * 
      * @param string
      * 
-     * @return the double of the test
+     * @return the result of the aq
      * @throws IllegalAssignmentException   If something is attributed to a non variable;
      * @throws IOException if something missfires 
      * @throws CommandException if quit is given
      */
-    public double parse(String string) throws IllegalAssignmentException, IOException, CommandException{
-       
+    @Deprecated
+    public double parse(String string) throws IllegalAssignmentException, IOException, CommandException{  
         SymbolicExpression result = parseExpression(string);
         return result.getValue();
 
@@ -57,27 +70,15 @@ public class CalculatorParser {
      * @throws CommandException If a command is returned the parser can't handle 
      */
     public SymbolicExpression parseExpression(String string) throws IOException, IllegalAssignmentException, CommandException{
-       
         st = new StreamTokenizer(new StringReader(string));
         st.eolIsSignificant(true);
         st.ordinaryChar('-');
-        st.nextToken();
-        attempts = 0; 
-        SymbolicExpression result  = assignment();
-        if(isCommand()&& !result.isCommand()){
-            throw new IllegalAssignmentException("Not a properly written command");
-        }
-        else if (result.isCommand()){
-            if(result instanceof Clear){
-                vars.clear();
-            }
-            if(result instanceof Quit){
-                throw new CommandException(result);
-            }
-            return result;
-        }
-        else if(st.ttype!=st.TT_EOF) { throw new RuntimeException("Not a complete assignments");}
+        st.ordinaryChar(ADDITION);
+        st.ordinaryChar(DIVISION);
+        st.ordinaryChar(ASSIGNMENT);
 
+        st.nextToken();
+        SymbolicExpression result  = statement();
         result = result.eval(vars);
         successfull++;
         if(result instanceof Constant){
@@ -97,29 +98,55 @@ public class CalculatorParser {
         return e.eval(vars);
     }
     
-    private boolean isCommand(){
-        if(st.TT_WORD!=st.ttype) return false;
-            for(String str : commands){
-                    if(str.equals(st.sval.toLowerCase()));
+
+    
+    /**
+     *Makes sure that the term has been properly turned into a symbolicexpression and sees so that it 
+     * it will be interpreted the right way
+     * 
+     * @return the term translated into a tree of statements
+     * @throws IOException
+     * @throws IllegalAssignmentException
+     */
+    private SymbolicExpression statement() throws IOException,IllegalAssignmentException,  CommandException{
+        try{if(st.ttype==StreamTokenizer.TT_WORD) command();
+        }catch(CommandException e){
+ 
+            if(StreamTokenizer.TT_EOF != st.ttype){
+                throw new IllegalAssignmentException("Incorrectly written function");
             }
-        return true;
-
+            else if(e.getCommand() instanceof Clear){
+                vars.clear();
+               throw new CommandException(Clear.getInstance());
+            }
+             else if(e.getCommand() instanceof Vars){
+                vars.printVars();
+                throw new CommandException(Vars.instance());
+            }
+            else if (e.getCommand() instanceof Quit){
+                throw new CommandException(Quit.getInstance());
+             
+         }
+        }
+        SymbolicExpression result = assignment();
+        if(st.ttype!=StreamTokenizer.TT_EOF) { throw new IllegalAssignmentException("Incorrectly written function");}
+            else{
+            vars.put(new Variable("ans"),result);
+            successfull++;
+            if(result instanceof Constant) complete++;
+            return result;
+         }
+ 
     }
-    
-    
-    private SymbolicExpression statement() throws IOException,IllegalAssignmentException{
-        return assignment();
-    }
-
-    // public SymbolicExpression statement() throws IOException{
-        
-    //     if(isCommand()){
-    //         throw new IOException("Is Command");
-    //     }
-    //     return expression();
-    // }
-
+  
+  /**
+   * Function that for assigning valuables to a variable if demanded 
+   * @return
+   * @throws IOException
+   * @throws IllegalAssignmentException
+   */
     private SymbolicExpression assignment() throws IOException, IllegalAssignmentException{
+
         SymbolicExpression result =   expression();
         while(st.ttype=='='){
             st.nextToken();
@@ -127,16 +154,24 @@ public class CalculatorParser {
         }
         return result;
     }
+
+    /**
+     * Looks for additional and subtraction signs in term
+     * @return
+     * @throws IOException
+     * @throws IllegalAssignmentException
+     */
     private SymbolicExpression expression() throws IOException,IllegalAssignmentException{
+
         SymbolicExpression result = term();
         while (st.ttype == '+' || st.ttype == '-') {
            int operation = st.ttype;
            st.nextToken();
            if (operation == '+') {
-               result = new Addition(result, term());
+               result = new Addition(result, expression());
            } else {
 
-               result = new Subtraction( result, term());
+               result = new Subtraction( result, expression());
            }
         }
         return result;
@@ -148,113 +183,139 @@ public class CalculatorParser {
      * @throws IllegalAssignmentException
      */
      private SymbolicExpression term() throws IOException,IllegalAssignmentException{
-        SymbolicExpression result  =factor();
+        SymbolicExpression result  =unary();
         while(st.ttype=='*'|| st.ttype =='/'){
             int operation = st.ttype; 
+
             st.nextToken();
-            if(operation=='*'){
-                return new Multiplication(result, factor());
+
+            if(operation==MULTIPLY){
+                return new Multiplication(result, term());
             }
-            else if(operation=='/');{
-                return new Division(result, factor());
+            else if(operation==DIVISION);{
+                return new Division(result, term());
             }
         }
         return result; 
     }
-    /*Handles the distribution of '('
-      */
+
+    private SymbolicExpression unary() throws IllegalAssignmentException, IOException{
+        if (st.ttype==NEGATION){
+            st.nextToken();
+            return new Negation(unary());
+        }
+        else if(st.ttype==StreamTokenizer.TT_WORD){      
+            String value = st.sval;
+            if(value.equalsIgnoreCase(EXP)){
+                st.nextToken();    
+                return new Exp(unary());
+            }
+            else if(value.equalsIgnoreCase(LOG)){
+                st.nextToken();    
+
+                return new Log(unary());
+                
+            }
+            else if(value.equalsIgnoreCase(COS)){
+                st.nextToken();    
+
+                return new Cos(unary()); 
+            }
+            else if(value.equalsIgnoreCase(SIN)){
+                st.nextToken();    
+
+               return new Sin(unary()); 
+             }
+             //failing to tie the string to a function we have to push the stringreader back a step and wait till down to command and vars
+
+
+             
+         }
+        return factor();
+    }
+    /**handles the use of brackets and will call Assignment because it might fall within brackets
+     * Will call an error if the string tokenizer does not hold a ')' at return
+     * If no bracket is found continues to command
+    */
     private SymbolicExpression factor() throws IOException, IllegalAssignmentException{
+        SymbolicExpression result;
+
         if(st.ttype=='('){
             
             st.nextToken();
 
-            SymbolicExpression result = expression();
+            result = assignment();
 
-            if(st.ttype!=')') throw new IOException( "Failed to complete paragraph");
+            if(st.ttype!=')') throw new IOException( "Failed to complete paragraph last read sign was "+ result);
             else {
                 st.nextToken();
                 return  result;
-       } } 
-        return primary();
+       } 
     }
-    
-    private SymbolicExpression primary() throws IOException,IllegalAssignmentException{
-        if(st.ttype==st.TT_NUMBER){
+ 
+     return primary();
+    }
+   
+   
+    /**Checks to see if it is a comand
+    *@return a command if it is a command, else an number or a variable
+    */
+
+    private void  command() throws IOException, IllegalAssignmentException, CommandException{
+    String value = st.sval;
+    if(value.equalsIgnoreCase(QUIT)){
+        st.nextToken();
+        throw new CommandException(Quit.getInstance());
+    }
+    else if(value.equalsIgnoreCase(VARS)){
+        st.nextToken();
+        throw new CommandException(Vars.instance()); 
+    }
+        else if(value.equalsIgnoreCase(CLEAR)){
+        st.nextToken();
+        throw new CommandException(Clear.getInstance());
+    };
+    }
+    private SymbolicExpression primary() throws IOException,IllegalAssignmentException{            
+        if(st.ttype==StreamTokenizer.TT_NUMBER){
             double doub = st.nval;
             st.nextToken();
             return new Constant(doub);
         }
-        else return unary();
-    }
-    private SymbolicExpression  unary() throws IllegalAssignmentException, IOException{
         
-        if(st.ttype==st.TT_WORD){
-            SymbolicExpression result = readCommand();
-            
-            if(result!= null){
-                return result;
-            }
-            String value = st.sval;
-            st.nextToken();    
-            if(value.equalsIgnoreCase("exp")){
-                return new Exp(primary());
-            }
-            else if(value.equalsIgnoreCase("log")){
-                return new Log(primary());
-            }
-            else if(value.equalsIgnoreCase("cos")){
-                return new Cos(primary()); 
-            }
-            else if(value.equalsIgnoreCase("sin")){
-                return new Sin(primary()); 
-            }
-            else{
-                return new Variable(value);
-            }
+        else if(st.ttype == StreamTokenizer.TT_WORD){
+            try {command();} 
+            catch(CommandException e) {
+            throw new IllegalAssignmentException("Tried to use the command "+ e.getCommand()+ " as a term"); 
         }
-        else if(st.ttype=='-'){
+            String variable = st.sval;
             st.nextToken();
-            return new Negation(primary());
+            return new Variable(variable);
         }
-        throw new IOException("Failed to complete expression last sign parsed : \'"+ (char)st.ttype+"\'");
-       
+        else{ 
+            throw new IllegalAssignmentException("Could not complete terms \n last read was " + st.toString());}
     }
-    SymbolicExpression readCommand() throws IOException{
-        String value = st.sval;
-        if(value.equalsIgnoreCase("quit")){
-            return  Quit.getInstance();
-        }
-        else if(value.equalsIgnoreCase("vars")){
-            return Vars.instance(); 
-        }
-        else if(value.equalsIgnoreCase("clear")){
-            return Clear.getInstance();
-        }
-        else return null;
-        
-    }
-    
     
 
-    public void testEvaluating(double expected, SymbolicExpression e) throws IllegalAssignmentException {
-        SymbolicExpression r = e.eval(vars);
-        if (r.isConstant() && r.getValue() == expected){
-            System.out.println("Passed: " + e);
-        } else {
-            System.out.println("Error: expected '" + expected + "' but got '" + e + "'");
+    public SymbolicExpression testParse(String str)  throws Exception{
+        SymbolicExpression symb;
+        try{
+             symb = this.parseExpression(str);
         }
-    }
+        catch(Exception e){
+            throw new Exception(e + " happened");
+        }
+        return symb;
+    }    
+    // public SymbolicExpression testParseEvaled(String str) throws Exception{ 
+    //     try{
+    //         SymbolicExpression symb  
+    //         return symb.eval(vars);
+    //     }catch(Exception e){
+    //         throw new Exception("Error, Error. Error, Error");
+    //     }
+    // }
 
-    public void testEvaluating(SymbolicExpression expected, SymbolicExpression e) throws IllegalAssignmentException{
-        SymbolicExpression r = e.eval(vars);
-        if (r.equals(expected)) {
-            System.out.println("Passed: " + e);
-        } else {
-            System.out.println("Error: expected '" + expected + "' but got '" + e + "'");
-        }
-    }
-    
-    
 
 
     public static void main(String[] args){

@@ -72,15 +72,6 @@ public   abstract class SymbolicExpression  {
         throw new RuntimeException("getName() called on expression with no operator");
     }
 
-    /**
-     * checks if the var user is trying to define  define already exists  in the left term including by any variables there. Will check all Assignment objects in tree
-     *
-     *  
-     * @param vars environment holding all defined variables
-     * @return true if variable is found, else false 
-     */
-    abstract boolean varExists(Environment vars, SymbolicExpression sy);
-
 
     /// Returns e.g., "Constant(42)" if name is "Constant" and subExpressions is ["42"]
 

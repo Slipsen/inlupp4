@@ -17,11 +17,16 @@ public class Division extends Binary {
             return super.equals(e);
         }
     }
+
+    /**
+     * divides left hand term with right hand term
+     */
     public SymbolicExpression eval(Environment e ) throws IllegalAssignmentException{
         SymbolicExpression  lhs = getLeft().eval(e);
         SymbolicExpression rhs = getRight().eval(e);
-        if(rhs.isConstant()&&rhs.isConstant()){
-            return new Constant(rhs.getValue() / lhs.getValue());
+
+        if(lhs.isConstant()&&rhs.isConstant()){
+            return new Constant(lhs.getValue()/rhs.getValue());
         }
         else{
             return new Division(lhs,rhs);

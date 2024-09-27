@@ -25,12 +25,8 @@ public class Assignment extends Binary {
             throw new IllegalAssignmentException("tried to assign a value to another object than a variable");
         }
         e.put((Variable) getRight(), lhs);
-        return new Assignment(lhs, getRight());
+        return lhs;
     }
-
-    private boolean varFound(Environment e, SymbolicExpression se) {
-        return getLeft().varFound(e, se) && getRight.varFound(e, se);
-
-    }
+    
 
 }

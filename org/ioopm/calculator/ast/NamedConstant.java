@@ -7,7 +7,6 @@ public class NamedConstant extends Variable {
     public NamedConstant(String name, Double value) {
         super(name);
         this.value = value; 
-        //TODO Auto-generated constructor stub
     }
 
     /**

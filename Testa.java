@@ -1,24 +1,13 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.IOException;
-import java.util.StringTokenizer;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.util.Scanner;
-import org.ioopm.calculator.ast.Addition;
 import org.ioopm.calculator.ast.CommandException;
-import org.ioopm.calculator.ast.Constant;
-import org.ioopm.calculator.ast.Multiplication;
 import org.ioopm.calculator.ast.SymbolicExpression;
 import org.ioopm.calculator.ast.Variable;
 import org.ioopm.calculator.parser.CalculatorParser;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.ExceptionUtils;
 
 public class Testa{
     private CalculatorParser cp = new CalculatorParser();
@@ -50,18 +39,6 @@ public class Testa{
         assertTrue(result,"Error: expected '" + expected + "' but got '" + e + "'");
     }
 
-
-    public  boolean expectedResult(String str, double equals){
-        assertDoesNotThrow(()->cp.parse(str));
-        try{
-           return equals== cp.parse(str);
-        }
-        catch(Exception e){
-            return false;
-        }
-
-    }
-    
     void testParse(String read, String result, CalculatorParser parser){
         SymbolicExpression se = new Variable("faulty reading");; 
         boolean threwException = false;
@@ -75,19 +52,6 @@ public class Testa{
         assertFalse(threwException,"Threw an exception when parsing " + read);
         System.out.println(se +" " + result);
         assertTrue(se.toString().equals(result), "read "+ se + " as " + se + " instead of " + result );
-    }
-    @Test
-   public void Resulttest(){
-
-        assertThrows(CommandException.class,()->cp.parse("quit"));
-        
-        assertTrue(expectedResult("1+1",2));
-        assertTrue(expectedResult("2-1",1));
-    }
-    @Test
-    public void testPrinting(){
-        SymbolicExpression e = new Multiplication(new Addition(new Constant(5), new Variable("x")), new Constant(2));
-        
     }
     @Test
     public void testReading(){
@@ -109,9 +73,17 @@ public class Testa{
     public void parseText(String read, String compare, CalculatorParser cp){
         try{
             SymbolicExpression se = cp.parseExpression(read);
-            assertTrue(se.toString().equalsIgnoreCase(compare), "Parsed string was supposed to equal "+ compare + " but we got "+ se);
-        }catch (Exception e){
-            assertTrue(false,"Text could not be read");
+            assertTrue(se.toString().equalsIgnoreCase(compare), "Parsed string was supposed to equal "+ compare + " but we got "+ se.toString() + "and " + read + " was read");
+        }catch (CommandException e){
+            if(e.getCommand().getName().equals(compare)){
+                assertTrue(true);
+            }
+            else {
+                assertTrue(false);
+            }
+        }
+        catch (Exception e){
+            assertTrue(false,"Text " + read + " could not be read error was " + e);
         }
     }
     @Test
@@ -120,11 +92,14 @@ public class Testa{
         File object = new File("test.txt");
         Scanner reader = new Scanner(object);
         while(reader.hasNextLine()){
-            String toTest = reader.nextLine();
-            String toCompare = reader.nextLine();
+            String toTest = reader.nextLine().trim();
+            String toCompare = reader.nextLine().trim();
             parseText(toTest, toCompare, cp);
         }
+        reader.close();
+
         }
+        
         catch(FileNotFoundException e){
             System.out.println("Something went wrong");
         }

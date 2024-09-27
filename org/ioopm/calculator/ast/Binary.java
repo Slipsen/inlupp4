@@ -24,7 +24,4 @@ public abstract class  Binary extends SymbolicExpression {
     protected SymbolicExpression getRight(){
         return rhs; 
     }
-    boolean varExists(Environment vars, SymbolicExpression sy) {
-        return lhs.varExists(vars, sy) && lhs.varExists(vars, sy); 
-    }
 }

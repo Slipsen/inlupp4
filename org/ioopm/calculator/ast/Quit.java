@@ -7,9 +7,7 @@ public class Quit  extends Command{
         occurances++;
         assert(occurances==1);
     }    
-    public static Quit getInstance(){
-        return theInstance;
-    }
+    
 
     public String getName(){
         return "quit";

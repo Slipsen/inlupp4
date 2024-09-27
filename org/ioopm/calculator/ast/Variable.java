@@ -11,6 +11,11 @@ public class Variable extends Atom {
     public String toString(){
         return variable.toString();
     }
+
+    /**
+     * 
+     * @return true if variables are the same
+     */
     public boolean equals(Object e){
         if(e instanceof Variable){
             Variable var = (Variable) e;
@@ -30,8 +35,7 @@ public class Variable extends Atom {
         if(e.get(this)!=null){
             return (e.get(this).eval(e));
         }else{
-        return new Variable(variable);
-    
+          return new Variable(variable);
         }
     }
     /**
@@ -40,7 +44,5 @@ public class Variable extends Atom {
      */
     public int hashCode(){
         return variable.hashCode(); 
-
-
     }
 }
