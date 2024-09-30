@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MainTest",
+            "request": "launch",
+            "mainClass": "VariousTests.MainTest",
+            "projectName": "inlupp3_1bd3a331"
+        },
+        {
+            "type": "java",
             "name": "Test1",
             "request": "launch",
             "mainClass": "Test1",

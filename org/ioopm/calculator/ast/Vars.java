@@ -4,6 +4,7 @@ public class Vars extends Command {
     private  static final Vars theInstance = new Vars();
     private static int occurances = 0; 
     private Vars(){
+        super("vars");
         occurances++;
         assert(occurances==1);
     };
@@ -11,10 +12,10 @@ public class Vars extends Command {
         return theInstance;
     }
     public String getName(){
-        return "vars";
+        return super.getName();
     }
     public String toString(){
-        return "vars";
+        return super.getName();
     }
     /**
      * @param e object holding existing variables

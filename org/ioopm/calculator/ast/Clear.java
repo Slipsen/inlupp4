@@ -4,6 +4,7 @@ public class Clear extends Command {
     private static Clear theInstance = new Clear();
     private static int  i = 0; 
     private Clear (){
+        super("clear");
         i++;
         assert(i==1);
     }
@@ -18,13 +19,13 @@ public class Clear extends Command {
      * @returnthe name in form of String 
      */
     public String getName(){
-        return "clear";
+        return super.getName();
     }
     /**
      * return the name in in form of a string
      */
     public String toString(){
-        return "clear";
+        return getName();
     }
     /**
      * checks if other object is an instance of Quit

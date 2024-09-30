@@ -7,6 +7,7 @@ public class Quit  extends Command{
      * iniates object, makes sure it can only be iniated once
      */
     private Quit(){
+        super("Quit");
         occurances++;
         assert(occurances==1);
     }    
@@ -15,7 +16,7 @@ public class Quit  extends Command{
      * @return the name of the object "quit"
      */
     public String getName(){
-        return "quit";
+        return super.getName();
     }
     
     /**

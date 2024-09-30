@@ -15,7 +15,7 @@ public   abstract class SymbolicExpression  {
      */
     public SymbolicExpression(int priority){
         this.priority = priority;
-        this.name=name;
+
     }
 
     /**gets the value stored in object

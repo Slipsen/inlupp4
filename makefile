@@ -16,5 +16,11 @@ try:
 clean:
 	rm -rf classes
 
+miscTests:
+	javac -d VariousTests  VariousTests/MainTest.java
+	java -cp VariousTests VariousTests/MainTest
+	rm -rf VariousTests/VariousTests
+
+
 runtest:
 	javac -cp lib/junit-platform-console-standalone-1.11.0.jar Testa.java
