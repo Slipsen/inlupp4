@@ -3,12 +3,12 @@ package org.ioopm.calculator.ast;
 public class Cos  extends Unary{
 
     public Cos(SymbolicExpression value) {
-        super(value,25);
+        super(value,25,"cos");
         //TODO Auto-generated constructor stub
     }
     @Override
     public String getName() {
-        return "cos";
+        return getName();
     }
     @Override
     public boolean equals(Object e) {

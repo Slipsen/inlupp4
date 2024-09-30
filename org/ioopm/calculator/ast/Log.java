@@ -3,14 +3,14 @@ package org.ioopm.calculator.ast;
 public class Log extends Unary {
 
     public Log(SymbolicExpression value) {
-        super(value,25);
+        super(value,25,"log");
     }
 
     /**
      * @return the name of the class, "log"
      */
     public String getName(){
-        return "log";
+        return getName();
     }
     /**
      * checks if same class. then checks child value

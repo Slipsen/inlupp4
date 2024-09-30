@@ -7,12 +7,12 @@ public class Exp extends Unary {
      * @param value
      */
     public Exp(SymbolicExpression value) {
-        super(value,25);
+        super(value,25,"exp");
     }
     @Override
     public String getName() {
         
-    return "exp";
+    return getName();
     }
         /**
      * checks if same class. then checks child value

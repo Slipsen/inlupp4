@@ -6,8 +6,10 @@ package org.ioopm.calculator.ast;
 
 public abstract class Unary  extends SymbolicExpression{
     private SymbolicExpression value = null;
-    public Unary(SymbolicExpression value ,int priority){
+    String name;
+    public Unary(SymbolicExpression value ,int priority, String name){
         this.value = value; 
+        this.name = name; 
     }
 
     /**

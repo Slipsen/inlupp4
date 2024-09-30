@@ -8,14 +8,14 @@ public class Negation extends Unary{
 
 
     public Negation(SymbolicExpression value) {
-        super(value,25);
+        super(value,25,"-");
         //TODO Auto-generated constructor stub
     }
     /**
      * @return its name in form of string, a minus sign
      */
     public String getName(){
-        return "-";
+        return getName();
     }
     
     /** 

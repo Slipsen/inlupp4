@@ -6,14 +6,14 @@ public class Sin extends Unary{
      * @param value class 
      */
     public Sin(SymbolicExpression value) {
-        super(value,25);
+        super(value,25,"sin");
     }
     
     /** 
      * @return name of class in form of String
      */
     public String getName(){
-        return "sin";
+        return getName();
     }
     
     /** 
