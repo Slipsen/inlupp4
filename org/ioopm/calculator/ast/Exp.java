@@ -26,7 +26,7 @@ public class Exp extends Unary {
         else{
             return false; 
         }
-    } d
+    } 
     /**
      * @return a new Eval with sub tree or a new Constant if evaluation returned a constant
      */
