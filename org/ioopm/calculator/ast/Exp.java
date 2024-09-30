@@ -2,7 +2,10 @@ package org.ioopm.calculator.ast;
 
 public class Exp extends Unary {
 
-
+    /**defines the sub class to hold one value
+     * 
+     * @param value
+     */
     public Exp(SymbolicExpression value) {
         super(value,25);
     }
@@ -24,7 +27,9 @@ public class Exp extends Unary {
             return false; 
         }
     } 
-
+    /**
+     * @return a new Eval with sub tree or a new Constant if evaluation returned a constant
+     */
     public SymbolicExpression eval( Environment e) throws IllegalAssignmentException{
         SymbolicExpression se = get().eval(e);
         if(se.isConstant()){

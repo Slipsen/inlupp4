@@ -7,7 +7,7 @@ public class Log extends Unary {
     }
 
     /**
-     * 
+     * @return the name of the class, "log"
      */
     public String getName(){
         return "log";

@@ -65,6 +65,7 @@ public class Calculator {
             }
             catch (RuntimeException e){
                 System.out.println(e.getMessage());
+                throw(e);
             }
             catch (IOException e){
                 System.out.println(e.getMessage());

@@ -3,12 +3,17 @@ package org.ioopm.calculator.ast;
 public class Quit  extends Command{
     private static Quit theInstance = new Quit();
     private static int occurances = 0;
+    /**
+     * iniates object, makes sure it can only be iniated once
+     */
     private Quit(){
         occurances++;
         assert(occurances==1);
     }    
     
-
+    /**
+     * @return the name of the object "quit"
+     */
     public String getName(){
         return "quit";
     }
@@ -24,5 +29,13 @@ public class Quit  extends Command{
         else{
             return false; 
         }
+    }
+    /**
+     * 
+     * @return returns the Quit object
+     */
+    public static SymbolicExpression getInstance(){
+        return theInstance; 
+
     }
 }

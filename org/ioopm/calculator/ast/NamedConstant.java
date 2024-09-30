@@ -4,10 +4,17 @@ package org.ioopm.calculator.ast;
  */
 public class NamedConstant extends Variable {
         private double value; 
+        /**
+         * 
+         * @param namethe name of the namedconstant
+         * @param value the value attached to it 
+         */
     public NamedConstant(String name, Double value) {
         super(name);
         this.value = value; 
     }
+
+
 
     /**
      * return string value it holds

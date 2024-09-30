@@ -1,7 +1,10 @@
 package org.ioopm.calculator.ast;
 
 public class Sin extends Unary{
-
+    /**
+     * iniates class. Stores value and sets order
+     * @param value class 
+     */
     public Sin(SymbolicExpression value) {
         super(value,25);
     }

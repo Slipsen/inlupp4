@@ -8,9 +8,19 @@ public   abstract class SymbolicExpression  {
     public SymbolicExpression(){
     
     }
+    /**iniates the symbolic expression
+     * iniates values stored by all SymbolicExpression classes
+     * 
+     * @param priority priority used to decide when to write parameters around objects
+     */
     public SymbolicExpression(int priority){
         this.priority = priority;
     }
+
+    /**gets the value stored in object
+     * @throws runTimeException for all objects that do not store a value
+     * @return
+     */
     public double getValue(){
         throw new RuntimeException("getValue() called on expression with no value");
     }

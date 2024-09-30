@@ -2,12 +2,11 @@ package org.ioopm.calculator.ast;
 
 public class Addition extends Binary{
     public Addition(SymbolicExpression lhs, SymbolicExpression rhs){
-        super(lhs,rhs, 200);
+        super(lhs,rhs, 200,"+");
     }
     @Override
     public String getName() {
-        return "+";
-    }
+        return super.getName();    }
 
     
     
@@ -29,7 +28,7 @@ public class Addition extends Binary{
     public SymbolicExpression eval(Environment e) throws IllegalAssignmentException{
         SymbolicExpression  lhs = getLeft().eval(e);
         SymbolicExpression rhs = getRight().eval(e);
-        if(rhs.isConstant()&&rhs.isConstant()){
+        if(lhs.isConstant()&&rhs.isConstant()){
             return new Constant(rhs.getValue() + lhs.getValue());
         }
         else{

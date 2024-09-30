@@ -44,7 +44,7 @@ public class CalculatorParser {
 
     public CalculatorParser(){ 
         vars = createEnvironment();
-        System.out.println(vars.keySet());      
+        
     }
     /**
      * 
@@ -72,14 +72,17 @@ public class CalculatorParser {
     public SymbolicExpression parseExpression(String string) throws IOException, IllegalAssignmentException, CommandException{
         st = new StreamTokenizer(new StringReader(string));
         st.eolIsSignificant(true);
-        st.ordinaryChar('-');
+        st.ordinaryChar(NEGATION);
         st.ordinaryChar(ADDITION);
         st.ordinaryChar(DIVISION);
         st.ordinaryChar(ASSIGNMENT);
 
+        
         st.nextToken();
         SymbolicExpression result  = statement();
+        
         result = result.eval(vars);
+        vars.put(new Variable("ans"),result);
         successfull++;
         if(result instanceof Constant){
             complete++;
@@ -131,9 +134,6 @@ public class CalculatorParser {
         SymbolicExpression result = assignment();
         if(st.ttype!=StreamTokenizer.TT_EOF) { throw new IllegalAssignmentException("Incorrectly written function");}
             else{
-            vars.put(new Variable("ans"),result);
-            successfull++;
-            if(result instanceof Constant) complete++;
             return result;
          }
  
@@ -281,7 +281,7 @@ public class CalculatorParser {
             double doub = st.nval;
             st.nextToken();
             return new Constant(doub);
-        }
+         }
         
         else if(st.ttype == StreamTokenizer.TT_WORD){
             try {command();} 
@@ -290,20 +290,22 @@ public class CalculatorParser {
         }
             String variable = st.sval;
             st.nextToken();
-            return new Variable(variable);
-        }
+            return new Variable(variable);}
         else{ 
             throw new IllegalAssignmentException("Could not complete terms \n last read was " + st.toString());}
     }
     
 
+    /**Function meant to allow for testing the parser without having to work a lot with stuff. 
+    * 
+    */
     public SymbolicExpression testParse(String str)  throws Exception{
         SymbolicExpression symb;
         try{
-             symb = this.parseExpression(str);
+            symb   = this.parseExpression(str);
         }
         catch(Exception e){
-            throw new Exception(e + " happened");
+         throw e;
         }
         return symb;
     }    
@@ -324,7 +326,7 @@ public class CalculatorParser {
         CalculatorParser  cp = new CalculatorParser();
         try{  
 
-            cp.parse("quit");
+            cp.parse("ans");
         }
             catch(Exception e){
             //System.out.println("Hello");

@@ -3,13 +3,11 @@ package org.ioopm.calculator.ast;
 public class Assignment extends Binary {
 
     public Assignment(SymbolicExpression lhs, SymbolicExpression rhs) {
-        super(lhs, rhs, 400);
+        super(lhs, rhs, 400,"=");
     }
 
     @Override
-    public String getName() {
-        return "=";
-    }
+
 
     /**
      * Will resolve equation in left branch and then assign them to variable in

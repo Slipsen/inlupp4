@@ -3,11 +3,8 @@ package org.ioopm.calculator.ast;
 public class Multiplication extends Binary {
 
     public Multiplication(SymbolicExpression lhs, SymbolicExpression rhs) {
-        super(lhs, rhs,100);
+        super(lhs, rhs,100,"*");
         //TODO Auto-generated constructor stub
-    }
-    public String getName(){
-        return "*";
     }
     /**
      * checks if both objects are the same. Then compares left and right tree
