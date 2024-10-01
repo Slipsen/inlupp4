@@ -4,7 +4,6 @@ public class Cos  extends Unary{
 
     public Cos(SymbolicExpression value) {
         super(value,25,"cos");
-        //TODO Auto-generated constructor stub
     }
     @Override
     public String getName() {

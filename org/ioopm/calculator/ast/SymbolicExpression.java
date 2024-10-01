@@ -1,8 +1,5 @@
 package org.ioopm.calculator.ast;
-import java.math.*;
 public   abstract class SymbolicExpression  {
-    private String name;
-    private String[] subExpressions;
     private int priority = 0;
     
     public SymbolicExpression(){

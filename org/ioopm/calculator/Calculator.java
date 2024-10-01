@@ -10,9 +10,6 @@ package org.ioopm.calculator;
 
 import java.io.IOException;
 import org.ioopm.calculator.parser.CalculatorParser;
-import java.io.StreamTokenizer;
-import java.io.StringReader;
-import java.util.HashMap;
 
 import org.ioopm.calculator.ast.*;
 
@@ -60,6 +57,7 @@ public class Calculator {
         final CalculatorParser  cp = new CalculatorParser();
         while(true){
             try{
+            System.out.println("Write input");
             String input = System.console().readLine();
             System.out.println(cp.parseExpression(input));
             }
@@ -76,7 +74,9 @@ public class Calculator {
             }
             catch(CommandException e){
                 if(e.getCommand() instanceof Quit){
-                    System.out.println("Program has been quit");
+
+                    String result = "Program has been quit\n" + cp.getAttempts() + " attempts made\n " + cp.getSuccess() + " successfull\n" + cp.getComplete() + " complete";
+                    System.out.println(result);
                     break;
                 }
             }

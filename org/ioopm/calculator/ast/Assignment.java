@@ -10,23 +10,25 @@ public class Assignment extends Binary {
         super(lhs, rhs, 400,"=");
     }
 
-    @Override
-
 
     /**
      * Will resolve equation in left branch and then assign them to variable in
      * right branch
      */
     public SymbolicExpression eval(Environment e) throws IllegalAssignmentException {
-
+        SymbolicExpression rightVar   = getRight();
         SymbolicExpression lhs = super.getLeft().eval(e);
-        if (Constants.isConstant(getRight().getName())) {
-            throw new IllegalAssignmentException("Tried to define a value to a constant variable");
-        }
-        if (false == getRight() instanceof Variable) {
+        if (false == rightVar instanceof Variable) {
             throw new IllegalAssignmentException("tried to assign a value to another object than a variable");
         }
-        e.put((Variable) getRight(), lhs);
+        else if (Constants.isConstant(rightVar.getName())) {
+            throw new IllegalAssignmentException("Tried to define a value to a constant variable");
+        }
+        else if(e.isReserved((Variable) rightVar)){
+             throw new IllegalAssignmentException("tried to assign a value to a reserved word");
+        }
+
+        e.put((Variable) rightVar, lhs);
         return lhs;
     }
     

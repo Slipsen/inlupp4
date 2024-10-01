@@ -5,11 +5,10 @@ package org.ioopm.calculator.parser;
 
 import org.ioopm.calculator.ast.*;
 //import org.junit.platform.console.shadow.picocli.CommandLine.Parameters;
-
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
-import java.util.HashMap;
+import java.util.Set;
 public class CalculatorParser {
     
     private  StreamTokenizer st;
@@ -23,6 +22,8 @@ public class CalculatorParser {
     private final static char MULTIPLY = '*';
     private final static char DIVISION = '/';
     private final static char NEGATION = '-';
+    private final static char LEFTPARANTHESIS = '(';
+    private final static char RIGHTPARANTESIS= ')';
     private final static String COS = "cos";
     private final static String SIN = "sin";
     private final static String EXP = "exp";
@@ -36,7 +37,6 @@ public class CalculatorParser {
     String writingError = "termwas incorrectly written";
     private Environment createEnvironment(){
         Environment en = new Environment();
-        en.putReserved("ans");
         en.put(new Variable("ans"),new Constant(0));
         return en; 
 
@@ -76,16 +76,18 @@ public class CalculatorParser {
         st.ordinaryChar(ADDITION);
         st.ordinaryChar(DIVISION);
         st.ordinaryChar(ASSIGNMENT);
-
+        this.increaseAttempts();;
         
         st.nextToken();
         SymbolicExpression result  = statement();
         
         result = result.eval(vars);
         vars.put(new Variable("ans"),result);
-        successfull++;
+       increaseSuccess();
+       vars.put(new Variable("ans"), result);
+
         if(result instanceof Constant){
-            complete++;
+            increaseComplete();
         }
         return result;
 
@@ -123,7 +125,11 @@ public class CalculatorParser {
                throw new CommandException(Clear.getInstance());
             }
              else if(e.getCommand() instanceof Vars){
-                vars.printVars();
+                Set<Variable> variables = vars.printVars();
+                for(Variable var : variables){
+                    SymbolicExpression res = vars.get(var);
+                    System.out.println(var + "="+res);
+                }
                 throw new CommandException(Vars.instance());
             }
             else if (e.getCommand() instanceof Quit){
@@ -148,7 +154,7 @@ public class CalculatorParser {
     private SymbolicExpression assignment() throws IOException, IllegalAssignmentException{
 
         SymbolicExpression result =   expression();
-        while(st.ttype=='='){
+        while(st.ttype== ASSIGNMENT){
             st.nextToken();
             result = new Assignment(result, expression());
         }
@@ -164,27 +170,27 @@ public class CalculatorParser {
     private SymbolicExpression expression() throws IOException,IllegalAssignmentException{
 
         SymbolicExpression result = term();
-        while (st.ttype == '+' || st.ttype == '-') {
+        while (st.ttype == ADDITION || st.ttype == NEGATION) {
            int operation = st.ttype;
            st.nextToken();
-           if (operation == '+') {
+           if (operation == ADDITION) {
                result = new Addition(result, expression());
-           } else {
+           } else if (operation == SUBTRACTION) { //Doesn't hurt to put an else if and be obvious 
 
                result = new Subtraction( result, expression());
            }
         }
         return result;
      }
-    /**
+    /** tries to form a new Expression  or another term of lower 
      * 
-     * @return 
-     * @throws IOException
+     * @return a new Multiplication, Division or other symbolic object
+     * @throws IOException 
      * @throws IllegalAssignmentException
      */
      private SymbolicExpression term() throws IOException,IllegalAssignmentException{
         SymbolicExpression result  =unary();
-        while(st.ttype=='*'|| st.ttype =='/'){
+        while(st.ttype==MULTIPLY|| st.ttype ==DIVISION){
             int operation = st.ttype; 
 
             st.nextToken();
@@ -199,6 +205,12 @@ public class CalculatorParser {
         return result; 
     }
 
+    /**Tries to find a Unary expression or lower
+     * 
+     * @return a new Unary or other symbolic expression
+     * @throws IllegalAssignmentException
+     * @throws IOException
+     */
     private SymbolicExpression unary() throws IllegalAssignmentException, IOException{
         if (st.ttype==NEGATION){
             st.nextToken();
@@ -233,20 +245,22 @@ public class CalculatorParser {
          }
         return factor();
     }
-    /**handles the use of brackets and will call Assignment because it might fall within brackets
-     * Will call an error if the string tokenizer does not hold a ')' at return
-     * If no bracket is found continues to command
-    */
+    /**
+     * Looks for  factorisation
+     * @return a new Assignment or less
+     * @throws IOException
+     * @throws IllegalAssignmentException
+     */
     private SymbolicExpression factor() throws IOException, IllegalAssignmentException{
         SymbolicExpression result;
 
-        if(st.ttype=='('){
+        if(st.ttype==LEFTPARANTHESIS){
             
             st.nextToken();
 
             result = assignment();
 
-            if(st.ttype!=')') throw new IOException( "Failed to complete paragraph last read sign was "+ result);
+            if(st.ttype!=RIGHTPARANTESIS) throw new IOException( "Failed to complete paragraph last read sign was "+ result);
             else {
                 st.nextToken();
                 return  result;
@@ -309,17 +323,30 @@ public class CalculatorParser {
         }
         return symb;
     }    
-    // public SymbolicExpression testParseEvaled(String str) throws Exception{ 
-    //     try{
-    //         SymbolicExpression symb  
-    //         return symb.eval(vars);
-    //     }catch(Exception e){
-    //         throw new Exception("Error, Error. Error, Error");
-    //     }
-    // }
-
-
-
+   
+    //getters
+    public int getSuccess(){
+        return successfull;
+    }
+    public int getAttempts(){
+        return attempts;
+    }
+    public int getComplete(){
+        return complete;
+    }
+    //increases
+    private void increaseSuccess(){
+    successfull++;}
+    private void increaseAttempts(){
+    attempts++;
+    }
+    private void increaseComplete(){
+        complete++;
+    }
+    ///decreases
+    private void decreaseAttempts(){
+        attempts--;
+    }
     public static void main(String[] args){
         
 

@@ -18,14 +18,7 @@ The operators are written in plain text into the running program and a list of t
 All texts or symbols that are not reserved as an operator or pre-existing variable and is not a number may be used as a symbol
 
 
-
-
-
-
-
-
-
-
+g
 
 
 
@@ -64,5 +57,9 @@ All texts or symbols that are not reserved as an operator or pre-existing variab
 
 ## pre-existing variables
 
-Used for acquiring the sum for 2 terms
+**pi** the real value of pi
 
+**answer** 42
+
+## other reservedterms
+**ans** the result of the previous complete equation

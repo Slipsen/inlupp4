@@ -34,7 +34,6 @@ public class Constant extends Atom {
     }
     @Override
     boolean varExists(Environment vars, SymbolicExpression sy) {
-        // TODO Auto-generated method stub
         return false;
     }
     

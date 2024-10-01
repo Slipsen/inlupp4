@@ -7,9 +7,15 @@ public class Environment extends HashMap<Variable, SymbolicExpression> {
     *has variable as key to make it easier to look existingup values
     */
     private ArrayList<String> reserved = new ArrayList<String>();
-
+    private final  String ANSWER = "ans"; //should do  this dynamoc but anothe t ime 
+    private SymbolicExpression last = new Constant(0);
     public SymbolicExpression put(Variable key, SymbolicExpression value){
         //Nothing supposed to be found if it is a named constant
+        if(Constants.isConstant(key)) return null;
+        else if(key.getName().equalsIgnoreCase(ANSWER)){
+            last = value;
+            return value;
+        }
         return super.put(key, value);    
     }
     /**
@@ -20,24 +26,29 @@ public class Environment extends HashMap<Variable, SymbolicExpression> {
     public SymbolicExpression get(String str){
         return get(new Variable(str));
     }
+
+    @SuppressWarnings("unused")
     public SymbolicExpression get(Variable var){
-        if(Constants.isConstant(var)){
+        if(var.getName().equalsIgnoreCase(ANSWER)){
+            return last;
+        }
+        else if(Constants.isConstant(var)){
             return Constants.get(var);
         }
         else{
             SymbolicExpression vari = super.get(var);
             if(var!=null) return vari;
-            else return var;
+            
         }
+        return new Variable(var.getName());
     }
-
     /**checks if name s is reserverdf
      * 
      * @param var variable with name to be checked 
      * @return true if reseved else not 
      */
     public boolean isReserved(Variable var){
-        return isReserved(var.getName());
+        return isReserved(var.getName()) || var.getName().equalsIgnoreCase(ANSWER);
     }
     
     /**checks if name s is reserverdf
@@ -59,21 +70,17 @@ public class Environment extends HashMap<Variable, SymbolicExpression> {
     public void putReserved(String var){
         reserved.add(var);
     }
-    /** //TODO fix
-     * @return list of variables that Environment holds
+    /** //
+     * @return list of variables the  Environment holds
      */
-    public void printVars(){
-        System.out.println("Current variables are: \n");
-        Set<Variable> keys= this.keySet();
-        for(Variable var : keys){
-            System.out.println(var + " :" + this.get(var));
-        }
+    public Set<Variable> printVars(){
+        return  this.keySet();
+        
 
     }/**
     removes all values stored in enVironment except reserved ones */
     public void clear(){
         super.clear();
     }
-
     
 }

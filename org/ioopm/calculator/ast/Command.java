@@ -1,7 +1,6 @@
 package org.ioopm.calculator.ast;
 
 public abstract class Command extends SymbolicExpression {
-   private  Command var;
    private String name; 
         protected Command(String name){
             super(0);
@@ -27,7 +26,6 @@ public abstract class Command extends SymbolicExpression {
     }
     public String getName(){
         return name;
-    }
-
+    }    
     
 }

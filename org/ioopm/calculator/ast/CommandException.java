@@ -5,6 +5,9 @@ public class CommandException extends Exception {
     public CommandException(SymbolicExpression command){
         this.command = command;
     }
+    /**get the command that caused the error 
+     * @return the command
+    */
     public SymbolicExpression getCommand(){
         return command;
     }
