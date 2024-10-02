@@ -35,7 +35,7 @@ public class Quit  extends Command{
      * 
      * @return returns the Quit object
      */
-    public static SymbolicExpression getInstance(){
+    public static Quit getInstance(){
         return theInstance; 
 
     }

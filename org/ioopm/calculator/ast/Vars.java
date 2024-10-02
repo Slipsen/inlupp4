@@ -27,7 +27,7 @@ public class Vars extends Command {
         }
         return false;
     }
-    static SymbolicExpression getInstance(){
+    public static Vars getInstance(){
         return theInstance; 
 
     }
