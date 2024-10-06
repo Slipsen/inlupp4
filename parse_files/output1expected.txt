@@ -1,0 +1,15 @@
+make[1]: Entering directory '/home/jare2104/aNewTry/inlupp4'
+java -cp classes org/ioopm/calculator/Calculator
+20.0
+60.0
+80.0
+100.0
+10.0
+10.0
+20.0
+- 1.0
+10.0 - x
+20.0
+- 10.0
+Quit
+make[1]: Leaving directory '/home/jare2104/aNewTry/inlupp4'

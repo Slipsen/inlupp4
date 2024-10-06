@@ -15,10 +15,7 @@ public class Quit  extends Command{
     /**
      * @return the name of the object "quit"
      */
-    public String getName(){
-        return super.getName();
-    }
-    
+
     /**
      * checks if other other object a Quit
      * @return returns true if both are of Quit class 

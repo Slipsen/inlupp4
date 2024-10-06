@@ -9,7 +9,7 @@ public class Variable extends Atom {
         return variable;
     }
     public String toString(){
-        return variable.toString();
+        return variable;
     }
 
     /**
@@ -19,7 +19,7 @@ public class Variable extends Atom {
     public boolean equals(Object e){
         if(e instanceof Variable){
             Variable var = (Variable) e;
-            return variable.equals(var.variable);
+            return variable.equals(var.getName());
         }
         return false;
         
@@ -44,5 +44,12 @@ public class Variable extends Atom {
      */
     public int hashCode(){
         return variable.hashCode(); 
+    }
+    /**adds the variable for clarity
+     * @return class name withthe variable
+     */
+    @Override
+    public String getOverlay() {
+        return super.getOverlay() + " (" + variable +")" ;
     }
 }

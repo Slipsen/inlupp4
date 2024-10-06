@@ -13,9 +13,7 @@ public class Negation extends Unary{
     /**
      * @return its name in form of string, a minus sign
      */
-    public String getName(){
-        return getName();
-    }
+
     
     /** 
      * checks if same class and then compare both child objects

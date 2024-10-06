@@ -41,6 +41,17 @@ public class CalculatorParser {
         return en; 
 
     }
+    /**Simply creates the streamtokenizer for general use 
+     * @throws IOException */
+    public void inateTokenizer(String string ) throws IOException{
+        st = new StreamTokenizer(new StringReader(string));
+        st.eolIsSignificant(true);
+        st.ordinaryChar(NEGATION);
+        st.ordinaryChar(ADDITION);
+        st.ordinaryChar(DIVISION);
+        st.ordinaryChar(ASSIGNMENT);
+        st.nextToken();
+    }
 
     public CalculatorParser(){ 
         vars = createEnvironment();
@@ -70,15 +81,9 @@ public class CalculatorParser {
      * @throws CommandException If a command is returned the parser can't handle 
      */
     public SymbolicExpression parseExpression(String string) throws IOException, IllegalAssignmentException, CommandException{
-        st = new StreamTokenizer(new StringReader(string));
-        st.eolIsSignificant(true);
-        st.ordinaryChar(NEGATION);
-        st.ordinaryChar(ADDITION);
-        st.ordinaryChar(DIVISION);
-        st.ordinaryChar(ASSIGNMENT);
+        inateTokenizer(string);
         this.increaseAttempts();;
         
-        st.nextToken();
         SymbolicExpression result  = statement();
         
         result = result.eval(vars);
@@ -311,12 +316,17 @@ public class CalculatorParser {
     
 
     /**Function meant to allow for testing the parser without having to work a lot with stuff. 
-    * 
+    * @param str the string to be parsed
+    *@throws Exception youshould have a general idea of what exception you want to be thrown when using this
     */
     public SymbolicExpression testParse(String str)  throws Exception{
         SymbolicExpression symb;
+        inateTokenizer(str);
         try{
-            symb   = this.parseExpression(str);
+            symb   = statement();
+        }
+        catch(CommandException e){
+            return e.getCommand();
         }
         catch(Exception e){
          throw e;

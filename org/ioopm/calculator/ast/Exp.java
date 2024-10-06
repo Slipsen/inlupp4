@@ -10,10 +10,7 @@ public class Exp extends Unary {
         super(value,25,"exp");
     }
     @Override
-    public String getName() {
-        
-    return getName();
-    }
+
         /**
      * checks if same class. then checks child value
      * @param e Environment holding all defined value

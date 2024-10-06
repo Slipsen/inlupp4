@@ -11,12 +11,6 @@ public class Vars extends Command {
     public static Vars instance(){
         return theInstance;
     }
-    public String getName(){
-        return super.getName();
-    }
-    public String toString(){
-        return super.getName();
-    }
     /**
      * @param e object holding existing variables
      * @return the result of the equation

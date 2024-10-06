@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Testa",
+            "request": "launch",
+            "mainClass": "tests.Testa",
+            "projectName": "inlupp4_1bd3a332"
+        },
+        {
+            "type": "java",
+            "name": "Tests",
+            "request": "launch",
+            "mainClass": "tests.Tests",
+            "projectName": "inlupp4_1bd3a332"
+        },
+        {
+            "type": "java",
+            "name": "Testa",
+            "request": "launch",
+            "mainClass": "Testa",
+            "projectName": "inlupp4_1bd3a332"
+        },
+        {
+            "type": "java",
             "name": "MainTest",
             "request": "launch",
             "mainClass": "VariousTests.MainTest",

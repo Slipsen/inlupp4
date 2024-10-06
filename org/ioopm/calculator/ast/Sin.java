@@ -12,9 +12,7 @@ public class Sin extends Unary{
     /** 
      * @return name of class in form of String
      */
-    public String getName(){
-        return getName();
-    }
+    
     
     /** 
      * @param e

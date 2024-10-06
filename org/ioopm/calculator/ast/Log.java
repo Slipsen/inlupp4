@@ -6,12 +6,7 @@ public class Log extends Unary {
         super(value,25,"log");
     }
 
-    /**
-     * @return the name of the class, "log"
-     */
-    public String getName(){
-        return getName();
-    }
+
     /**
      * checks if same class. then checks child value
      * @param e Environment holding all defined value

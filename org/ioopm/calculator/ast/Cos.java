@@ -5,10 +5,7 @@ public class Cos  extends Unary{
     public Cos(SymbolicExpression value) {
         super(value,25,"cos");
     }
-    @Override
-    public String getName() {
-        return getName();
-    }
+    
     @Override
     public boolean equals(Object e) {
         if(e instanceof Cos)

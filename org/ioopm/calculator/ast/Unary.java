@@ -5,10 +5,11 @@ package org.ioopm.calculator.ast;
  */
 
 public abstract class Unary  extends SymbolicExpression{
-    private SymbolicExpression value = null;
+    private SymbolicExpression branch = null;
     String name;
-    public Unary(SymbolicExpression value ,int priority, String name){
-        this.value = value; 
+    public Unary(SymbolicExpression branch ,int priority, String name){
+        super(priority);
+        this.branch = branch; 
         this.name = name; 
     }
 
@@ -16,30 +17,43 @@ public abstract class Unary  extends SymbolicExpression{
      * @return string of itself and its child objects with parentheses around the child objects string if its priority is lower 
      */
     public String toString(){
-        String str = this.getName() + " ";
-        if(this.getPriority()<value.getPriority()){
-            return str+= " (" + this.get() + ") ";
-        }else{
-        return str + this.get();
-    
+        String str = branch.toString() ;
+        if(this.getPriority()<branch.getPriority()){
+            str = "(" +str + ")";
         }
+        return this.getName()+ " " + str;
     
     }
     /**
      * compares
-     *  calls equals on the value it holds to check its sub tree
+     *  calls equals on the branch it holds to check its sub tree
      * @return true if both sub-trees are the same
      */
     public boolean equals(Object e){
-        return this.equals((Unary) e);
+        return branch.equals(((Unary) e).get());
     }
     /**
      * 
-     * @return the value stored in this unary
+     * @return the branch stored in this unary
      */
     public SymbolicExpression get(){
-        return value;
+        return branch;
     }
+    public String getName() {
+        return name;
+    }
+    /**
+     * simple test class for seeing the structure of a tree
+     * @return String containing the class name of this and every sub object
+     */
+    /**
+     * 
+     * @return this class name and every class under it 
+     */
+     public String getOverlay() {
+        return this.getObjectName() + " " +getParantheses(branch, branch.getOverlay());
+    }
+
 
     
 

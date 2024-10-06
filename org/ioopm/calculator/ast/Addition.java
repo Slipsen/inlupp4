@@ -1,16 +1,10 @@
 package org.ioopm.calculator.ast;
 
 public class Addition extends Binary{
+    int priority = 200;
     public Addition(SymbolicExpression lhs, SymbolicExpression rhs){
-        super(lhs,rhs, 200,"+");
-    }
-    @Override
-    public String getName() {
-        return super.getName();    }
-
-    
-    
- 
+        super(lhs, rhs, 200,"+");
+    }    
     public boolean equals(Object e){
         if(!(e instanceof Addition)){
             return false;

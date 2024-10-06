@@ -18,21 +18,13 @@ public class Clear extends Command {
     /**
      * @returnthe name in form of String 
      */
-    public String getName(){
-        return super.getName();
-    }
-    /**
-     * return the name in in form of a string
-     */
-    public String toString(){
-        return getName();
-    }
+  
     /**
      * checks if other object is an instance of Quit
      * @return true if other object is Quit else false
      */
     public boolean equals(Object e){
-        if(e instanceof Quit){
+        if(e instanceof Clear){
             return true;
         }
         else{

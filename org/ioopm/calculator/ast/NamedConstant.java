@@ -3,14 +3,14 @@ package org.ioopm.calculator.ast;
  * variable used to separate variables that are tied to named constants from other constants
  */
 public class NamedConstant extends Variable {
-        private double value; 
+    private double value; 
         /**
          * 
          * @param namethe name of the namedconstant
          * @param value the value attached to it 
          */
     public NamedConstant(String name, Double value) {
-        super(name);
+        super(name);        
         this.value = value; 
     }
 

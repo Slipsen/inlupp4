@@ -10,14 +10,13 @@ public class Constant extends Atom {
         
     }
     @Override
-    public String getName() {
-        return ""+value; 
-    }
     public double getValue() {
         return value;
     }
     public String toString(){
-        return String.valueOf(this.value);
+        
+        if(value<0) return "- "+String.valueOf(Math.abs(this.value));
+        else return String.valueOf(this.value);
     }
     public boolean equals(Object e){
         if(e instanceof Constant){
@@ -36,5 +35,11 @@ public class Constant extends Atom {
     boolean varExists(Environment vars, SymbolicExpression sy) {
         return false;
     }
-    
+        /**adds the variable for clarity
+     * @return class name withthe variable
+     */
+    @Override
+    public String getOverlay() {
+        return super.getOverlay() + " (" + value+")" ;
+    }
 }

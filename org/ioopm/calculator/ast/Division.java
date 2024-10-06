@@ -40,7 +40,9 @@ public class Division extends Binary {
         SymbolicExpression rhs = getRight().eval(e);
 
         if(lhs.isConstant()&&rhs.isConstant()){
-            return new Constant(lhs.getValue()/rhs.getValue());
+            double val = lhs.getValue()/rhs.getValue();
+            if(Double.isInfinite(val)) throw new ArithmeticException();
+            return new Constant(val);
         }
         else{
             return new Division(lhs,rhs);

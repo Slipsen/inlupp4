@@ -4,11 +4,6 @@ public class Subtraction extends Binary {
     public Subtraction(SymbolicExpression lhs, SymbolicExpression rhs){
         super(lhs,rhs,200, "-");
     }
-    /**
-     * @return name which is "-"
-     */
-    public String getName(){
-        return getName();    }
     /**checks if this and other object are both subtract and then checks sub trees
      * @param e the object to compare to
      * @return true if sub trees and name are equal false else

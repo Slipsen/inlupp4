@@ -12,7 +12,7 @@ import java.io.IOException;
 import org.ioopm.calculator.parser.CalculatorParser;
 
 import org.ioopm.calculator.ast.*;
-
+import java.util.Scanner;
 
 
 
@@ -55,13 +55,20 @@ public class Calculator {
 }
     public static void main(String [] args){
         final CalculatorParser  cp = new CalculatorParser();
+        Scanner sc = new Scanner(System.in);
         while(true){
+            
+        if(System.console()!=null){
             try{
-            System.out.println("Write input");
-            String input = System.console().readLine();
-            System.out.println(cp.parseExpression(input));
+            /**If we read logs from a txtfile then System.console will be empty */
+
+                System.out.println("Write input");
+                String input = System.console().readLine();
+                System.out.println(cp.parseExpression(input));
+                
             }
             catch (RuntimeException e){
+                
                 System.out.println(e.getMessage());
                 throw(e);
             }
@@ -80,8 +87,23 @@ public class Calculator {
                     break;
                 }
             }
-
+        }
+        else{   
+            try{String input = sc.nextLine();
+            SymbolicExpression result = cp.parseExpression(input);
+            System.out.println(result);
+            }
+        catch(CommandException e){
+                System.out.println(e.getCommand()); 
+                if(e.getCommand() instanceof Quit){
+                    break;
+                }
+            }
+            catch(Exception e ){
+                System.out.println(e.getMessage());
+                break;
+            } 
         }
     }
-    
+}
 }

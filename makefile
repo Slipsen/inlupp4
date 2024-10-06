@@ -15,12 +15,10 @@ try:
 
 clean:
 	rm -rf classes
-
-miscTests:
-	javac -d VariousTests  VariousTests/MainTest.java
-	java -cp VariousTests VariousTests/MainTest
-	rm -rf VariousTests/VariousTests
-
+testPrint: 
+	make all
+	make run < parse_files/input1.txt > parse_files/output1.txt
+	diff parse_files/output1.txt parse_files/output1expected.txt > parse_files/result1.txt
 
 runtest:
 	javac -cp lib/junit-platform-console-standalone-1.11.0.jar Testa.java

@@ -45,6 +45,14 @@ public   abstract class SymbolicExpression  {
         }
         return str;
     }
+    public String getParantheses(SymbolicExpression e, String str){
+        if(this.getPriority()<e.getPriority()){
+        str = "("+ str + ")";
+        }
+        return str;
+
+    }
+
 
     /**
      * @param Object the object to be compared
@@ -79,6 +87,22 @@ public   abstract class SymbolicExpression  {
     {
         throw new RuntimeException("getName() called on expression with no operator");
     }
+
+    /** Returns the objects of the tree as a string of classes 
+    *
+    
+    **/
+    public String getOverlay(){
+        return this.getClass().getSimpleName();
+    };
+    /**get the class name itself
+     * 
+     * @return class name in form of String String 
+     */
+    public String getObjectName(){
+        return this.getClass().getSimpleName();
+    }
+
 
 
     /// Returns e.g., "Constant(42)" if name is "Constant" and subExpressions is ["42"]

@@ -24,8 +24,8 @@ public abstract class Command extends SymbolicExpression {
     public String toString(){
         return name;
     }
-    public String getName(){
-        return name;
-    }    
+    // public String getName(){
+    //     return name;
+    // }    
     
 }

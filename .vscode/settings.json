@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": [
+        "."
+    ],
+    "java.project.referencedLibraries": [
+        "/home/jare2104/aNewTry/inlupp4/lib/junit-platform-console-standalone-1.11.0.jar"
+    ]
+}

@@ -24,10 +24,13 @@ public abstract class  Binary extends SymbolicExpression {
         Binary bin = (Binary) se;
         return lhs.equals(bin.lhs) && rhs.equals(bin.rhs);
     }
-    protected SymbolicExpression  getLeft(){
+    public SymbolicExpression  getLeft(){
         return lhs; 
     }
-    protected SymbolicExpression getRight(){
+    public SymbolicExpression getRight(){
         return rhs; 
+    }
+    public String getOverlay(){
+        return getParantheses(lhs, lhs.getOverlay()) + " " + this.getClass().getSimpleName() + " " + getParantheses(rhs,rhs.getOverlay());
     }
 }
